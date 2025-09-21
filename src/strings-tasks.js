@@ -424,8 +424,8 @@ function invertCase(str) {
  *   getStringFromTemplate('John','Doe') => 'Hello, John Doe!'
  *   getStringFromTemplate('Chuck','Norris') => 'Hello, Chuck Norris!'
  */
-function getStringFromTemplate(/* firstName, lastName */) {
-  throw new Error('Not implemented');
+function getStringFromTemplate(firstName, lastName) {
+  return `Hello, ${firstName} ${lastName}!`;
 }
 
 /**
@@ -438,8 +438,8 @@ function getStringFromTemplate(/* firstName, lastName */) {
  *   extractNameFromTemplate('Hello, John Doe!') => 'John Doe'
  *   extractNameFromTemplate('Hello, Chuck Norris!') => 'Chuck Norris'
  */
-function extractNameFromTemplate(/* value */) {
-  throw new Error('Not implemented');
+function extractNameFromTemplate(value) {
+  return value.split(' ').slice(1).join(' ').slice(0, -1);
 }
 
 /**
@@ -453,8 +453,9 @@ function extractNameFromTemplate(/* value */) {
  *   unbracketTag('<span>') => 'span'
  *   unbracketTag('<a>') => 'a'
  */
-function unbracketTag(/* str */) {
-  throw new Error('Not implemented');
+function unbracketTag(str) {
+  const result = str.substring(1, str.length - 1);
+  return result;
 }
 
 /**
@@ -472,8 +473,8 @@ function unbracketTag(/* str */) {
  *   ],
  *   'info@gmail.com' => ['info@gmail.com']
  */
-function extractEmails(/* str */) {
-  throw new Error('Not implemented');
+function extractEmails(str) {
+  return str.split(';');
 }
 
 /**
@@ -492,8 +493,28 @@ function extractEmails(/* str */) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  if (str === '') return '';
+  const chars = str.split('');
+  chars.forEach((char, index) => {
+    switch (true) {
+      case /[a-m]/.test(char):
+        chars[index] = String.fromCharCode(char.charCodeAt() + 13);
+        break;
+      case /[n-z]/.test(char):
+        chars[index] = String.fromCharCode(char.charCodeAt() - 13);
+        break;
+      case /[A-M]/.test(char):
+        chars[index] = String.fromCharCode(char.charCodeAt() + 13);
+        break;
+      case /[N-Z]/.test(char):
+        chars[index] = String.fromCharCode(char.charCodeAt() - 13);
+        break;
+      default:
+        break;
+    }
+  });
+  return chars.join('');
 }
 
 /**
@@ -520,8 +541,14 @@ function encodeToRot13(/* str */) {
  *   'Q♠' => 50
  *   'K♠' => 51
  */
-function getCardId(/* value */) {
-  throw new Error('Not implemented');
+function getCardId(value) {
+  const suits = ['♣', '♦', '♥', '♠'];
+  const court = { A: 0, J: 10, Q: 11, K: 12 };
+  const indexMultiplayer = 13 * suits.indexOf(value.at(value.length - 1));
+  if (Number(value.slice(0, value.length - 1))) {
+    return indexMultiplayer + Number(value.slice(0, value.length - 1)) - 1;
+  }
+  return indexMultiplayer + court[value[0]];
 }
 
 module.exports = {
